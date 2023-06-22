@@ -14,7 +14,6 @@
             inherit system overlays;
           };
           rust-toolchain = pkgs.rust-bin.stable."1.70.0".default;
-          nixos-lib = import (nixpkgs + "/nixos/lib") { };
         in
         with pkgs;
         {
