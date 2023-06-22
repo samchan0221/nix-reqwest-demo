@@ -1,3 +1,4 @@
 fn main() {
-    println!("Hello, world!");
+    let client = reqwest::Client::new();
+    println!("{:?}", client);
 }
