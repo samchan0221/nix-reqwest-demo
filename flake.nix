@@ -18,11 +18,8 @@
             default = mkShell
               {
                 buildInputs = [
-                  openssl
-                  pkg-config
                   cargo
                 ];
-                LD_LIBRARY_PATH = lib.makeLibraryPath [ openssl ];
               };
           };
 
