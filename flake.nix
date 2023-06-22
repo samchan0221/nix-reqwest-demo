@@ -1,19 +1,16 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-    rust-overlay.url = "github:oxalica/rust-overlay/stable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, ... }:
+  outputs = { self, nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
-          overlays = [ (import rust-overlay) ];
           pkgs = import nixpkgs {
-            inherit system overlays;
+            inherit system;
           };
-          rust-toolchain = pkgs.rust-bin.stable."1.70.0".default;
         in
         with pkgs;
         {
@@ -21,21 +18,9 @@
             default = mkShell
               {
                 buildInputs = [
-                  # musl
                   openssl
                   pkg-config
-                  # glibc
-                  (rust-toolchain.override {
-                    extensions = [
-                      "rust-src"
-                      "rust-analyzer"
-                    ];
-                  })
-                  cargo-watch
-                  cargo-audit
-                  cargo-expand
-                  cargo-machete
-                  sqlx-cli
+                  cargo
                 ];
                 LD_LIBRARY_PATH = lib.makeLibraryPath [ openssl ];
               };
@@ -45,6 +30,3 @@
         }
       );
 }
-
-
-
